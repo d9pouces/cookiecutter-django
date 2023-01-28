@@ -1,3 +1,6 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
 {%- set license_classifiers = {
     'CECILL-B': 'License :: OSI Approved :: CeCILL-B Free Software License Agreement (CECILL-B)',
     'MIT license': 'License :: OSI Approved :: MIT License',
@@ -8,38 +11,36 @@
 } %}
 
 [tool.poetry]
-name = "{{ cookiecutter.project_slug }}"
-version = "{{ cookiecutter.version }}"
-description = "{{ cookiecutter.project_short_description }}"
 authors = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
-maintainers = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
-readme = "README.md"
-packages = [{include = "{{ cookiecutter.project_slug }}"}]
-repository='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}'
-documentation='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}'
 classifiers = [
-        'Development Status :: 5 - Production/Stable',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: POSIX :: BSD',
-        'Operating System :: POSIX :: Linux',
-        'Operating System :: Unix',
-        'Framework :: Django :: 3.2',
-        'Framework :: Django :: 4.0',
-        'Framework :: Django :: 4.1',
+  'Development Status :: 5 - Production/Stable',
+  'Operating System :: MacOS :: MacOS X',
+  'Operating System :: POSIX :: BSD',
+  'Operating System :: POSIX :: Linux',
+  'Operating System :: Unix',
+  'Framework :: Django :: 3.2',
+  'Framework :: Django :: 4.0',
+  'Framework :: Django :: 4.1',
 {%- if cookiecutter.open_source_license in license_classifiers %}
-        '{{ license_classifiers[cookiecutter.open_source_license] }}',
+  '{{ license_classifiers[cookiecutter.open_source_license] }}',
 {%- endif %}
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
-        'Programming Language :: Python :: 3.11',
-    ]
-
-{% if cookiecutter.open_source_license in license_classifiers %}license="{{ cookiecutter.open_source_license }}"{% else %}license="Proprietary"{% endif %}
+  'Programming Language :: Python :: 3',
+  'Programming Language :: Python :: 3 :: Only',
+  'Programming Language :: Python :: 3.9',
+  'Programming Language :: Python :: 3.10',
+  'Programming Language :: Python :: 3.11'
+]
+description = "{{ cookiecutter.project_short_description }}"
+documentation = 'https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}'
+{% if cookiecutter.open_source_license in license_classifiers %}license = "{{ cookiecutter.open_source_license }}"{% else %}license="Proprietary"{% endif %}
+maintainers = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
+name = "{{ cookiecutter.project_slug }}"
+packages = [{include = "{{ cookiecutter.project_slug }}"}]
+readme = "README.md"
+repository = 'https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}'
+version = "{{ cookiecutter.version }}"
 
 [tool.poetry.dependencies]
-python = "^3.11"
 df_config = "^1.1.6"
 django-csp = "^3.6"
 django-npm = "^1.0.0"
@@ -48,6 +49,7 @@ django-redis = "^5.2.0"
 django-redis-sessions = "^0.6.2"
 gunicorn = "^20.1.0"
 psycopg2 = "^2.9"
+python = "^3.11"
 whitenoise = "^6.3.0"
 
 [tool.poetry.dev-dependencies]
@@ -55,10 +57,6 @@ djt-csp = "^0.9.9"
 
 [tool.poetry.scripts]
 {{ cookiecutter.project_slug }}-ctl = 'df_config.manage:manage'
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.tox]
 legacy_tox_ini = """
