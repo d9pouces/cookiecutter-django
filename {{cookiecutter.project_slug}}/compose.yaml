@@ -3,24 +3,21 @@ services:
     http:
         volumes:
             - .docker/media:/media
-            - .docker/tmp:/tmp
             - .docker/log:/log
-        command: /bin/sh -c "amn3-ctl collectstatic --noinput && amn3-ctl migrate && amn3-ctl server"
         links:
-            - amn3_redis_database
-            - amn3_sql_database
+            - redis_database
+            - sql_database
         depends_on:
             - redis_database
             - sql_database
-            - vnu
         env_file:
             - "tools/compose.env"
         restart: always
         ports:
             - "8000:8000"
         build:
-            context: ./tools/docker
-            dockerfile: ../../Dockerfile
+            context: .
+            dockerfile: ./Dockerfile
     sql_database:
         image: postgres:alpine
         volumes:
@@ -34,7 +31,7 @@ services:
             - PGDATA=/var/lib/postgresql/data/postgresql
             - POSTGRES_DB=database
             - POSTGRES_PASSWORD=password
-            - POSTGRES_USER=amn3
+            - POSTGRES_USER=username
         ports:
             - "127.0.0.1:5432:5432"
         restart: always
