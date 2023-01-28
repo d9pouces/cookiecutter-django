@@ -2,9 +2,10 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/d9pouces/mybestpractices
-    rev: 0.2.3
+    rev: 0.2.6
     hooks:
       - id: mybestpractices-git-autotag
+      - id: required-precommit-hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
@@ -72,7 +73,7 @@ repos:
       -   id: flake8
           args: ['--max-line-length', '88', '--ignore', 'E203,E501,C901,F401,W503', '--max-complexity', '18', '--select', 'B,C,E,F,W,T4,B9']
   -   repo: https://github.com/PyCQA/isort
-      rev: 5.11.4
+      rev: 5.12.0
       hooks:
       -   id: isort
           args: ['--trailing-comma', '--line-length', '88', '--multi-line', '3', '--profile', 'black', '--use-parentheses']
@@ -82,7 +83,7 @@ repos:
       -   id: pydocstyle
           args: ['--ignore', 'D100, D101, D102, D103, D104, D105, D106, D107, D203, D205, D209, D212, D213, D400, D403, D415']
   -   repo: https://github.com/d9pouces/mybestpractices
-      rev: 0.2.3
+      rev: 0.2.5
       hooks:
       -   id: mybestpractices-structure
       -   id: mybestpractices-third-party-update
@@ -98,6 +99,30 @@ repos:
       rev: v1.10.0
       hooks:
       -   id: text-unicode-replacement-char
+  -   repo: https://github.com/FalconSocial/pre-commit-mirrors-pep257
+      rev: v0.3.3
+      hooks:
+      -   id: pep257
+  -   repo: https://github.com/commitizen-tools/commitizen
+      rev: v2.40.0
+      hooks:
+      -   id: commitizen
+  -   repo: https://github.com/awebdeveloper/pre-commit-tslint
+      rev: 0.0.2
+      hooks:
+      - id: tslint
+  -   repo: https://github.com/AleksaC/hadolint-py
+      rev: v2.12.0
+      hooks:
+      - id: hadolint
+  -   repo: https://github.com/pre-commit/mirrors-scss-lint
+      rev: v0.59.0
+      hooks:
+      - id: scss-lint
+  -   repo: https://github.com/pre-commit/mirrors-eslint
+      rev: v8.32.0
+      hooks:
+      - id: eslint
 
 
 default_language_version:

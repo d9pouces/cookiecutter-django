@@ -1,3 +1,4 @@
+"""Define settings for local development."""
 import tempfile
 
 DEBUG = True
