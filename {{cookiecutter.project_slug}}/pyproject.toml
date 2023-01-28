@@ -15,8 +15,8 @@ authors = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.
 maintainers = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
 readme = "README.md"
 packages = [{include = "{{ cookiecutter.project_slug }}"}]
-repository='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}',
-documentation='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}',
+repository='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}'
+documentation='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}'
 classifiers = [
         'Development Status :: 5 - Production/Stable',
         'Operating System :: MacOS :: MacOS X',
@@ -26,8 +26,10 @@ classifiers = [
         'Framework :: Django :: 3.2',
         'Framework :: Django :: 4.0',
         'Framework :: Django :: 4.1',
-{%- if cookiecutter.open_source_license in license_classifiers %}        '{{ license_classifiers[cookiecutter.open_source_license] }}',
-{%- endif %}        'Programming Language :: Python :: 3',
+{%- if cookiecutter.open_source_license in license_classifiers %}
+        '{{ license_classifiers[cookiecutter.open_source_license] }}',
+{%- endif %}
+        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
@@ -38,7 +40,18 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.11"
-df_config = "^1.1"
+df_config = "^1.1.6"
+django-csp = "^3.6"
+django-npm = "^1.0.0"
+django-pipeline = "^2.0.0"
+django-redis = "^5.2.0"
+django-redis-sessions = "^0.6.2"
+gunicorn = "^20.1.0"
+psycopg2 = "^2.9"
+whitenoise = "^6.3.0"
+
+[tool.poetry.dev-dependencies]
+djt-csp = "^0.9.9"
 
 [tool.poetry.scripts]
 {{ cookiecutter.project_slug }}-ctl = 'df_config.manage:manage'
@@ -57,7 +70,7 @@ setenv =
     PYTHONPATH = {toxinidir}
 {% if cookiecutter.use_pytest == 'y' -%}
 commands =
-    pip install -U pip pytest
+    python3 -m pip install -U pip pytest
     pytest --basetemp={envtmpdir}
 {%- endif %}
 """
