@@ -1,0 +1,63 @@
+{%- set license_classifiers = {
+    'CECILL-B': 'License :: OSI Approved :: CeCILL-B Free Software License Agreement (CECILL-B)',
+    'MIT license': 'License :: OSI Approved :: MIT License',
+    'BSD license': 'License :: OSI Approved :: BSD License',
+    'ISC license': 'License :: OSI Approved :: ISC License (ISCL)',
+    'Apache Software License 2.0': 'License :: OSI Approved :: Apache Software License',
+    'GNU General Public License v3': 'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
+} %}
+
+[tool.poetry]
+name = "{{ cookiecutter.project_slug }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.project_short_description }}"
+authors = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
+maintainers = ["{{ cookiecutter.full_name.replace('\"', '\\\"') }} <{{ cookiecutter.email }}>"]
+readme = "README.md"
+packages = [{include = "{{ cookiecutter.project_slug }}"}]
+repository='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}',
+documentation='https://github.com/{{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}',
+classifiers = [
+        'Development Status :: 5 - Production/Stable',
+        'Operating System :: MacOS :: MacOS X',
+        'Operating System :: POSIX :: BSD',
+        'Operating System :: POSIX :: Linux',
+        'Operating System :: Unix',
+        'Framework :: Django :: 3.2',
+        'Framework :: Django :: 4.0',
+        'Framework :: Django :: 4.1',
+{%- if cookiecutter.open_source_license in license_classifiers %}        '{{ license_classifiers[cookiecutter.open_source_license] }}',
+{%- endif %}        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+    ]
+
+{% if cookiecutter.open_source_license in license_classifiers %}license="{{ cookiecutter.open_source_license }}"{% else %}license="Proprietary"{% endif %}
+
+[tool.poetry.dependencies]
+python = "^3.11"
+df_config = "^1.1"
+
+[tool.poetry.scripts]
+{{ cookiecutter.project_slug }}-ctl = 'df_config.manage:manage'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py39, py310, py311
+
+[testenv]
+setenv =
+    PYTHONPATH = {toxinidir}
+{% if cookiecutter.use_pytest == 'y' -%}
+commands =
+    pip install -U pip pytest
+    pytest --basetemp={envtmpdir}
+{%- endif %}
+"""

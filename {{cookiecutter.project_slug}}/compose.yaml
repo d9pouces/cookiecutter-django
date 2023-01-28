@@ -1,0 +1,59 @@
+version: "3"
+services:
+    http:
+        volumes:
+            - .docker/media:/media
+            - .docker/tmp:/tmp
+            - .docker/log:/log
+        command: /bin/sh -c "amn3-ctl collectstatic --noinput && amn3-ctl migrate && amn3-ctl server"
+        links:
+            - amn3_redis_database
+            - amn3_sql_database
+        depends_on:
+            - redis_database
+            - sql_database
+            - vnu
+        env_file:
+            - "tools/compose.env"
+        restart: always
+        ports:
+            - "8000:8000"
+        build:
+            context: ./tools/docker
+            dockerfile: ../../Dockerfile
+    sql_database:
+        image: postgres:alpine
+        volumes:
+            - .docker/postgresql:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD", "pg_isready", "-U", "username", "-d", "database"]
+            interval: 60s
+            timeout: 5s
+            retries: 10
+        environment:
+            - PGDATA=/var/lib/postgresql/data/postgresql
+            - POSTGRES_DB=database
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_USER=amn3
+        ports:
+            - "127.0.0.1:5432:5432"
+        restart: always
+    redis_database:
+        image: redis:alpine
+        volumes:
+            - .docker/redis:/data
+        command: redis-server --requirepass "password"
+        environment:
+            - REDIS_PASSWORD=password
+        ports:
+            - "127.0.0.1:6379:6379"
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 60s
+            timeout: 5s
+            retries: 10
+        restart: always
+    vnu:
+        image: ghcr.io/validator/validator:latest
+        ports:
+            - "127.0.0.1:12888:8888"

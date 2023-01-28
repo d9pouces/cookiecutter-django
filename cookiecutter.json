@@ -1,0 +1,13 @@
+{
+  "full_name": "Matthieu Gallet",
+  "email": "github@19pouces.net",
+  "github_username": "d9pouces",
+  "project_name": "demo_dfconfig",
+  "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+  "project_short_description": "A complete Django project using df_config.",
+  "pypi_username": "{{ cookiecutter.github_username }}",
+  "version": "0.1.0",
+  "use_pytest": "n",
+  "add_pyup_badge": "n",
+  "open_source_license": ["CECILL-B", "MIT license", "BSD license", "ISC license", "Apache Software License 2.0", "GNU General Public License v3", "Not open source"]
+}
