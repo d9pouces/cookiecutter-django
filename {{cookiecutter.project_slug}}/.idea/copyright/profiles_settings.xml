@@ -4,14 +4,14 @@
       <element module="All" copyright="Copyright" />
     </module2copyright>
     <LanguageOptions name="CSS">
-      <option name="addBlankBefore" value="true" />
+      <option name="addBlankBefore" value="false" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
       <option name="box" value="true" />
       <option name="filler" value="*" />
     </LanguageOptions>
     <LanguageOptions name="Python">
-      <option name="addBlankBefore" value="true" />
+      <option name="addBlankBefore" value="false" />
       <option name="block" value="false" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
@@ -19,11 +19,12 @@
       <option name="filler" value="#" />
     </LanguageOptions>
     <LanguageOptions name="__TEMPLATE__">
-      <option name="addBlankBefore" value="true" />
+      <option name="addBlankBefore" value="false" />
+      <option name="block" value="false" />
       <option name="separateBefore" value="true" />
       <option name="separateAfter" value="true" />
       <option name="box" value="true" />
-      <option name="filler" value="*" />
+      <option name="filler" value="#" />
     </LanguageOptions>
   </settings>
 </component>
