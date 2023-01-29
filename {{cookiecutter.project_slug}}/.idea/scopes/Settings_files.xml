@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Django settings files" pattern="file:local_settings.py||file:{{ cookiecutter.project_slug }}/defaults.py" />
+</component>

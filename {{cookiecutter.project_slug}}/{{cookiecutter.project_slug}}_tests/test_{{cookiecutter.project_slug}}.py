@@ -1,34 +1,20 @@
 """Tests for `{{ cookiecutter.project_slug }}` package."""
 
-{% if cookiecutter.use_pytest == 'y' -%}
+{% if cookiecutter.use_pytest == 'y' %}
 import pytest
-{% else %}
-import unittest
-{%- endif %}
-
-from {{ cookiecutter.project_slug }} import {{ cookiecutter.project_slug }}
-
-{%- if cookiecutter.use_pytest == 'y' %}
+from django.contrib.auth.models import User
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-def test_content(response):
+@pytest.mark.django_db
+def test_content():
     """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
-{%- else %}
+    assert 0 == User.objects.all().count()
+{% else %}
+from django.contrib.auth.models import User
+from django.test import TestCase
 
 
-class Test{{ cookiecutter.project_slug|title }}(unittest.TestCase):
+class Test{{ cookiecutter.project_slug|replace("_", " ")|title|replace(" ", "") }}(TestCase):
     """Tests for `{{ cookiecutter.project_slug }}` package."""
 
     def setUp(self):
@@ -39,4 +25,5 @@ class Test{{ cookiecutter.project_slug|title }}(unittest.TestCase):
 
     def test_000_something(self):
         """Test something."""
-{%- endif %}
+        self.assertEqual(0, User.objects.all().count())
+{% endif %}
