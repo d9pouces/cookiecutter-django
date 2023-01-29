@@ -8,7 +8,7 @@ description = ""
 name = "cookiecutter-django"
 packages = [{include = "cookiecutter_django"}]
 readme = "README.md"
-version = "0.8.0"
+version = "0.8.1"
 
 [tool.poetry.dependencies]
 python = "^3.11"
