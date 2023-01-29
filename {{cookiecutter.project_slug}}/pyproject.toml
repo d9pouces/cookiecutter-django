@@ -57,6 +57,10 @@ djt-nvu = "^0.9.2"
 {% if cookiecutter.use_pytest == 'y' %}pytest = "^7.2.1"
 pytest-django = "^4.5.2"
 {% endif %}
+[tool.poetry.group.doc.dependencies]
+sphinx = ">=4,<6"
+myst-parser = "^0.18.1"
+
 [tool.poetry.scripts]
 {{ cookiecutter.project_slug }}-ctl = 'df_config.manage:manage'
 {% if cookiecutter.use_pytest == 'y' %}

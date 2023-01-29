@@ -1,12 +1,15 @@
 Cookiecutter Django
 ===================
 
-Ensure default files for a complete df-config project
-- compose.yaml
-- Dockerfile
-- .scss-lint.yml
-- local_settings.py
+Generate a skeleton of a Django project with the following attributes:
 
+- based on poetry and configuration in pyproject.toml
+- Dockerfile/compose.yaml files ready for development
+- run configurations for runserver/unit testing in PyCharm
+- pre-commit hookes installed and configured
+- examples of working unittests
+- copyright notices configured for PyCharm
+- example of Github workflow for unittests
 
 Quickstart
 ----------
