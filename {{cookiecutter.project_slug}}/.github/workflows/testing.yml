@@ -1,59 +1,53 @@
-name: Test d9pouces/globalsitechecker
+name: Test {{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
 on:
   push:
     branches:
     - master
 jobs:
   unittests:
-    name: Unittests Python ${{ matrix.python-version }}
+    name: Unittests Python {% raw %}${{ matrix.python-version }}{% endraw %}
     runs-on: ubuntu-22.04
     strategy:
       matrix:
         python-version: ['3.11']
     services:
       sql_database:
-        image: postgres:alpine
+        image: postgres
         options: >-
           --health-cmd "pg_isready -U username -d database"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+        - 15432:5432
         env:
           POSTGRES_DB: database
           POSTGRES_USER: username
+          POSTGRES_PASSWORD: password
       redis_database:
-        image: redis:alpine
+        image: redis
         options: >-
-          --health-cmd 'redis-cli ping'
+          --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         env:
-          REDIS_PASSWORD: ''
-      minio_storage:
-        image: minio/minio:latest
-        env:
-          MINIO_ACCESS_KEY: access-key
-          MINIO_SECRET_KEY: secret-key
-        options: >-
-          --health-cmd 'curl -f http://localhost:9000/minio/health/live'
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          POSTGRES_USER: username
+        ports:
+        - 16379:6379
     env:
       PYTHONHASHSEED: 28739944
       OBJC_DISABLE_INITIALIZE_FORK_SAFETY: yes
+      TEMP_DIRECTORY: /tmp
+      UPLOAD_DIRECTORY: /media
+      LOG_DIRECTORY: /log
+      DATABASE_URL: postgres://username:password@localhost:15432/database
+      REDIS_URL: redis://localhost:16379/1
     steps:
     - uses: actions/checkout@v3
-    - uses: xom9ikk/dotenv@v2
-      with:
-        path: tools/base.env
-    - uses: xom9ikk/dotenv@v2
-      with:
-        path: tools/in-container.env
     - uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: '{% raw %}${{ matrix.python-version }}{% endraw %}'
     - run: python3 -m pip install -U pip pytest poetry
     - run: poetry install --all-extras
     - run: poetry run python manage.py collectstatic --noinput
