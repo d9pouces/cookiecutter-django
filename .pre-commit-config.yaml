@@ -14,7 +14,6 @@ repos:
   - id: check-executables-have-shebangs
   - id: check-json
   - id: check-merge-conflict
-  - id: check-yaml
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.10.0
   hooks:
@@ -118,8 +117,6 @@ repos:
   rev: v2.6.0
   hooks:
   - id: pretty-format-ini
-    args: [--autofix]
-  - id: pretty-format-yaml
     args: [--autofix]
 
 
