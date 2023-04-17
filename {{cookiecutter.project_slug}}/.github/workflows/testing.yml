@@ -14,7 +14,7 @@ jobs:
       sql_database:
         image: postgres:alpine
         options: >-
-          --health-cmd pg_isready -U username -d database
+          --health-cmd 'pg_isready -U username -d database'
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -22,38 +22,29 @@ jobs:
           POSTGRES_DB: database
           POSTGRES_PASSWORD: password
           POSTGRES_USER: username
-        ports:
-        - 5432:5432
       redis_database:
         image: redis:alpine
         env:
           REDIS_PASSWORD: password
-        ports:
-        - 6379:6379
         options: >-
-          --entrypoint redis-server --requirepass "password"
-          --health-cmd redis-cli ping
+          --entrypoint 'redis-server --requirepass password'
+          --health-cmd 'redis-cli ping'
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
       minio_storage:
         image: minio/minio:latest
-        ports:
-        - 9001:9001
         env:
           MINIO_ACCESS_KEY: access-key
           MINIO_SECRET_KEY: secret-key
         options: >-
-          --health-cmd curl -f http://localhost:9000/minio/health/live
+          --health-cmd 'curl -f http://localhost:9000/minio/health/live'
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: postgresql://interdiode:interdiode@localhost:5432/interdiode_db
-      INTERDIODE_REDIS_DB: 1
-      INTERDIODE_REDIS_HOST: localhost
-      INTERDIODE_REDIS_PORT: 6379
-      INTERDIODE_HEADLESS_CHROME_PATH: ''
+      DATABASE_URL: postgresql://username:password@sql_database:5432/database
+      REDIS_URL: redis://:password@redis_database:6379/1
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
@@ -61,4 +52,5 @@ jobs:
         python-version: '{% raw %}${{ matrix.python-version }}{% endraw %}'
     - run: python3 -m pip install -U pip pytest poetry
     - run: poetry install --all-extras
+    - run: poetry run python manage.py migrate
     - run: poetry run pytest -v
