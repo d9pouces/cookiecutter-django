@@ -1,11 +1,11 @@
-name: Test {{ cookiecutter.github_username }}/{{ cookiecutter.project_slug }}
+name: Test d9pouces/globalsitechecker
 on:
   push:
     branches:
     - master
 jobs:
   unittests:
-    name: Unittests Python {% raw %}${{ matrix.python-version }}{% endraw %}
+    name: Unittests Python ${{ matrix.python-version }}
     runs-on: ubuntu-22.04
     strategy:
       matrix:
@@ -14,24 +14,22 @@ jobs:
       sql_database:
         image: postgres:alpine
         options: >-
-          --health-cmd 'pg_isready -U username -d database'
+          --health-cmd "pg_isready -U username -d database"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
         env:
           POSTGRES_DB: database
-          POSTGRES_PASSWORD: password
           POSTGRES_USER: username
       redis_database:
         image: redis:alpine
-        env:
-          REDIS_PASSWORD: password
         options: >-
-          --entrypoint 'redis-server --requirepass password'
           --health-cmd 'redis-cli ping'
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        env:
+          REDIS_PASSWORD: ''
       minio_storage:
         image: minio/minio:latest
         env:
@@ -43,14 +41,21 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: postgresql://username:password@sql_database:5432/database
-      REDIS_URL: redis://:password@redis_database:6379/1
+      PYTHONHASHSEED: 28739944
+      OBJC_DISABLE_INITIALIZE_FORK_SAFETY: yes
     steps:
     - uses: actions/checkout@v3
+    - uses: xom9ikk/dotenv@v2
+      with:
+        path: tools/base.env
+    - uses: xom9ikk/dotenv@v2
+      with:
+        path: tools/in-container.env
     - uses: actions/setup-python@v4
       with:
-        python-version: '{% raw %}${{ matrix.python-version }}{% endraw %}'
+        python-version: ${{ matrix.python-version }}
     - run: python3 -m pip install -U pip pytest poetry
     - run: poetry install --all-extras
+    - run: poetry run python manage.py collectstatic --noinput
     - run: poetry run python manage.py migrate
-    - run: poetry run pytest -v
+    - run: poetry run pytest -s

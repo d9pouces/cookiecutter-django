@@ -11,10 +11,11 @@ services:
     - redis_database
     - sql_database
     env_file:
-    - tools/compose.env
+    - tools/base.env
+    - tools/in-container.env
     restart: always
     ports:
-    - 8000:8000
+    - 127.0.0.1:8000:8000
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -39,9 +40,7 @@ services:
     image: redis:alpine
     volumes:
     - .docker/redis:/data
-    command: redis-server --requirepass "password"
-    environment:
-    - REDIS_PASSWORD=password
+    command: redis-server
     ports:
     - 127.0.0.1:6379:6379
     healthcheck:
